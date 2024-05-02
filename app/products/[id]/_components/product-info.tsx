@@ -131,7 +131,7 @@ const ProductInfo = ({ product, complementaryProducts }: ProductInfoProps) => {
                 {product.restaurant.deliveryTimeMinutes}min
               </p>
             ) : (
-              <p className="text-xs font-semibold">Grátis</p>
+              <p className="text-xs font-semibold">Não informado</p>
             )}
           </div>
         </Card>
@@ -145,6 +145,10 @@ const ProductInfo = ({ product, complementaryProducts }: ProductInfoProps) => {
       <div className="mt-6 space-y-3">
         <h3 className="px-5 font-semibold">Sucos</h3>
         <ProductList products={complementaryProducts} />
+      </div>
+
+      <div className="mt-6 px-5">
+        <Button className="w-full font-semibold">Adicionar à sacola</Button>
       </div>
     </div>
   );
