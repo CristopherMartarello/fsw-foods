@@ -59,7 +59,7 @@ const CartItem = ({ cartProduct }: CartItemProps) => {
           </div>
 
           {/*QUANTIDADE*/}
-          <div className="flex items-center gap-4 text-center">
+          <div className="flex items-center text-center">
             <Button
               className="h-7 w-7 border border-solid border-muted-foreground"
               size="icon"
@@ -68,7 +68,7 @@ const CartItem = ({ cartProduct }: CartItemProps) => {
             >
               <ChevronLeftIcon size={16} />
             </Button>
-            <span className="w-2 text-xs">{cartProduct.quantity}</span>
+            <span className="w-7 text-xs">{cartProduct.quantity}</span>
             <Button
               size="icon"
               className="h-7 w-7"

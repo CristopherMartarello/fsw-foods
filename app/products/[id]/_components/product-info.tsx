@@ -4,6 +4,16 @@ import Cart from "@/app/_components/cart";
 import DeliveryInfo from "@/app/_components/delivery-info";
 import DiscountBadge from "@/app/_components/discount-badge";
 import ProductList from "@/app/_components/products-list";
+import {
+  AlertDialog,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "@/app/_components/ui/alert-dialog";
 import { Button } from "@/app/_components/ui/button";
 import {
   Sheet,
@@ -37,10 +47,26 @@ interface ProductInfoProps {
 const ProductInfo = ({ product, complementaryProducts }: ProductInfoProps) => {
   const [quantity, setQuantity] = useState(1);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const { addProductToCart } = useContext(CartContext);
+  const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] =
+    useState(false);
+  const { addProductToCart, products } = useContext(CartContext);
 
   const handleAddToCartClick = () => {
-    addProductToCart(product, quantity);
+    const hasDifferentRestaurantProduct = products.some(
+      (cartProduct) => cartProduct.restaurantId !== product.restaurantId,
+    );
+
+    if (hasDifferentRestaurantProduct) {
+      return setIsConfirmationDialogOpen(true);
+    }
+
+    addToCart({
+      emptyCart: false,
+    });
+  };
+
+  const addToCart = ({ emptyCart }: { emptyCart?: boolean }) => {
+    addProductToCart({ product, quantity, emptyCart });
     setIsCartOpen(true);
   };
 
@@ -145,6 +171,29 @@ const ProductInfo = ({ product, complementaryProducts }: ProductInfoProps) => {
           <Cart />
         </SheetContent>
       </Sheet>
+
+      <AlertDialog
+        open={isConfirmationDialogOpen}
+        onOpenChange={setIsConfirmationDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Notamos que sua sacola já possui produtos de outros restaurantes
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Deseja mesmo adicionar esse produto? Isso substituirá o seu pedido
+              antigo.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={() => addToCart({ emptyCart: true })}>
+              Esvaziar sacola e adicionar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };
