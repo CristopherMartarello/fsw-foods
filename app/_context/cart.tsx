@@ -11,7 +11,9 @@ export interface CartProduct
     include: {
       restaurant: {
         select: {
+          id: true;
           deliveryFee: true;
+          deliveryTimeMinutes: true;
         };
       };
     };
@@ -21,7 +23,7 @@ export interface CartProduct
 
 interface ICartContext {
   products: CartProduct[];
-  subtotal: number;
+  subtotalPrice: number;
   totalPrice: number;
   totalDiscounts: number;
   totalQuantity: number;
@@ -45,11 +47,12 @@ interface ICartContext {
   decreaseProductQuantity: (productId: string) => void;
   increaseProductQuantity: (productId: string) => void;
   removeProductFromCart: (productId: string) => void;
+  clearCart: () => void;
 }
 
 export const CartContext = createContext<ICartContext>({
   products: [],
-  subtotal: 0,
+  subtotalPrice: 0,
   totalPrice: 0,
   totalDiscounts: 0,
   totalQuantity: 0,
@@ -57,12 +60,13 @@ export const CartContext = createContext<ICartContext>({
   decreaseProductQuantity: () => {},
   increaseProductQuantity: () => {},
   removeProductFromCart: () => {},
+  clearCart: () => {},
 });
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [products, setProducts] = useState<CartProduct[]>([]);
 
-  const subtotal = useMemo(() => {
+  const subtotalPrice = useMemo(() => {
     //utilizando o useMemo para garantir que só será recalculado quando aquela dependencia em específico for atualizada
     return products.reduce((accumulator, product) => {
       return accumulator + Number(product.price) * product.quantity;
@@ -86,7 +90,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   }, [products]);
 
   const totalDiscounts =
-    subtotal - totalPrice + Number(products?.[0]?.restaurant?.deliveryFee);
+    subtotalPrice - totalPrice + Number(products?.[0]?.restaurant?.deliveryFee);
+
+  const clearCart = () => {
+    return setProducts([]);
+  };
 
   const increaseProductQuantity = (productId: string) => {
     return setProducts((prevProducts) =>
@@ -177,7 +185,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     <CartContext.Provider
       value={{
         products,
-        subtotal,
+        subtotalPrice,
         totalPrice,
         totalDiscounts,
         totalQuantity,
@@ -185,6 +193,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         decreaseProductQuantity,
         increaseProductQuantity,
         removeProductFromCart,
+        clearCart,
       }}
     >
       {children}
