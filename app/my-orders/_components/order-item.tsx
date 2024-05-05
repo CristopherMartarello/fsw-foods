@@ -3,10 +3,13 @@ import { Avatar, AvatarImage } from "@/app/_components/ui/avatar";
 import { Button } from "@/app/_components/ui/button";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Separator } from "@/app/_components/ui/separator";
+import { CartContext } from "@/app/_context/cart";
 import { formatCurrency } from "@/app/_helpers/price";
 import { OrderStatus, Prisma } from "@prisma/client";
 import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useContext } from "react";
 
 interface OrdemItemProps {
   order: Prisma.OrderGetPayload<{
@@ -37,6 +40,19 @@ const getOrderStatusLabel = (status: OrderStatus) => {
 };
 
 const OrderItem = ({ order }: OrdemItemProps) => {
+  const { addProductToCart } = useContext(CartContext);
+  const router = useRouter();
+
+  const handleRedoOrderClick = () => {
+    for (const orderProduct of order.products) {
+      addProductToCart({
+        product: { ...orderProduct.product, restaurant: order.restaurant },
+        quantity: orderProduct.quantity,
+      });
+    }
+
+    router.push(`/restaurants/${order.restaurantId}`);
+  };
   return (
     <Card>
       <CardContent className="p-5">
@@ -96,6 +112,7 @@ const OrderItem = ({ order }: OrdemItemProps) => {
             className="text-xs text-primary"
             size="sm"
             disabled={order.status !== "COMPLETED"}
+            onClick={handleRedoOrderClick}
           >
             Pedir novamente
           </Button>
