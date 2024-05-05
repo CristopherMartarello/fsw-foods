@@ -8,7 +8,7 @@ import { formatCurrency } from "@/app/_helpers/price";
 import { OrderStatus, Prisma } from "@prisma/client";
 import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useContext } from "react";
 
 interface OrdemItemProps {
@@ -57,7 +57,7 @@ const OrderItem = ({ order }: OrdemItemProps) => {
     <Card>
       <CardContent className="p-5">
         <div
-          className={`w-fit rounded-full bg-muted px-2 py-1 text-white ${order.status !== "COMPLETED" && "bg-green-500"}`}
+          className={`w-fit rounded-full bg-muted-foreground px-2 py-1 text-white ${order.status !== "COMPLETED" && "bg-green-600"}`}
         >
           <span className="block text-xs font-semibold">
             {getOrderStatusLabel(order.status)}
