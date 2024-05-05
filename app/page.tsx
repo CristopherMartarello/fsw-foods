@@ -27,6 +27,18 @@ const Home = async () => {
     },
   });
 
+  const burguersCategory = await db.category.findFirst({
+    where: {
+      name: "Hambúrgueres",
+    },
+  });
+
+  const pizzasCategory = await db.category.findFirst({
+    where: {
+      name: "Pizzas",
+    },
+  });
+
   return (
     <>
       <Header />
@@ -39,10 +51,12 @@ const Home = async () => {
       </div>
 
       <div className="px-5 pt-6">
-        <PromoBanner
-          src="/promo-banner-01.png"
-          alt="Até 30% de desconto em pizzas."
-        />
+        <Link href={`categories/${pizzasCategory?.id}/products`}>
+          <PromoBanner
+            src="/promo-banner-01.png"
+            alt="Até 30% de desconto em pizzas."
+          />
+        </Link>
       </div>
 
       <div className="space-y-3 pt-6">
@@ -62,10 +76,12 @@ const Home = async () => {
       </div>
 
       <div className="px-5 pt-6">
-        <PromoBanner
-          src="/promo-banner-02.png"
-          alt="A partir de R$17,90 em Lanches."
-        />
+        <Link href={`/categories/${burguersCategory?.id}/products`}>
+          <PromoBanner
+            src="/promo-banner-02.png"
+            alt="A partir de R$17,90 em Lanches."
+          />
+        </Link>
       </div>
 
       <div className="space-y-3 pt-6">
