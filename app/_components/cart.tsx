@@ -51,6 +51,14 @@ const Cart = () => {
         user: {
           connect: { id: data.user.id },
         },
+        products: {
+          createMany: {
+            data: products.map((product) => ({
+              productId: product.id,
+              quantity: product.quantity,
+            })),
+          },
+        },
       });
 
       clearCart();
@@ -127,7 +135,6 @@ const Cart = () => {
               <Button
                 className="mt-6 w-full"
                 onClick={() => setIsConfirmDialogOpen(true)}
-                disabled={isSubmitLoading}
               >
                 Finalizar pedido
               </Button>
@@ -153,7 +160,7 @@ const Cart = () => {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
-              disabled={isConfirmDialogOpen}
+              disabled={isSubmitLoading}
               onClick={handleFinishOrderClick}
             >
               {isSubmitLoading && (

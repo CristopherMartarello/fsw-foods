@@ -102,7 +102,7 @@ const Header = () => {
           <div className="space-y-2">
             <Button
               variant={"ghost"}
-              className="w-full justify-start gap-3 text-sm font-normal"
+              className="w-full justify-start space-x-3 text-sm font-normal"
             >
               <HomeIcon size={16} />
               <span className="block">Início</span>
@@ -110,15 +110,18 @@ const Header = () => {
 
             <Button
               variant={"ghost"}
-              className="w-full justify-start gap-3 text-sm font-normal"
+              className="w-full justify-start space-x-3 text-sm font-normal"
+              asChild
             >
-              <ScrollTextIcon size={16} />
-              <span className="block">Meus Pedidos</span>
+              <Link href="/my-orders">
+                <ScrollTextIcon size={16} />
+                <span className="block">Meus Pedidos</span>
+              </Link>
             </Button>
 
             <Button
               variant={"ghost"}
-              className="w-full justify-start gap-3 text-sm font-normal"
+              className="w-full justify-start space-x-3 text-sm font-normal"
             >
               <HeartIcon size={16} />
               <span className="block">Restaurantes favoritos</span>
