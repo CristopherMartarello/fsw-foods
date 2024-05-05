@@ -57,7 +57,7 @@ const OrderItem = ({ order }: OrdemItemProps) => {
     <Card>
       <CardContent className="p-5">
         <div
-          className={`w-fit rounded-full bg-muted-foreground px-2 py-1 text-white ${order.status !== "COMPLETED" && "bg-green-600"}`}
+          className={`w-fit rounded-full px-2 py-1 text-white ${order.status === "COMPLETED" ? "bg-muted-foreground" : "bg-green-500"}`}
         >
           <span className="block text-xs font-semibold">
             {getOrderStatusLabel(order.status)}
