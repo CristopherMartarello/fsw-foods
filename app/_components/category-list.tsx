@@ -6,7 +6,7 @@ const CategoryList = async () => {
   // get categories from database
   // render an item for each category
   return (
-    <div className="flex overflow-x-scroll">
+    <div className="flex gap-2 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
       {categories.map((category) => (
         <CategoryItem key={category.id} category={category} />
       ))}
